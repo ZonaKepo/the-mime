@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>The Mime</title>
 
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #0e1a1a;
+  font-family: 'Roboto Condensed', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.rotate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vh;
+  height: 100vw;
+  transform: translate(-50%, -50%) rotate(90deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 6vh 8vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  max-width: 84vh;
+  max-height: 86vw;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOMBOL DI ATAS */
+.theme-btn {
+  align-self: center;
+  background: #6faec9;
+  color: #102030;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.theme-btn span {
+  color: #555;
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+/* GRID */
+.grid-area {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+}
+
+.col-labels {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+  color: cyan;
+  font-weight: 700;
+}
+
+.row-labels {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  justify-items: center;
+  align-items: center;
+  color: orange;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  font-size: clamp(1.1rem, 2.6vh, 1.6rem);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.dark { background: #0f3f3f; }
+.light { background: #3a3a3a; }
+
+.footer {
+  font-size: 0.65rem;
+  color: #888;
+  text-align: center;
+  margin-top: 6px;
+}
+.footer a {
+  color: #888;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const THEMES = [
+  { title: "Barang Merah", items: ["apel","helm","tas","baju","kursi","botol","sepatu","topi","lipstik","ember","spidol","jaket","dompet","payung","mobil","bantal"] },
+  { title: "Di Dalam Kelas", items: ["papan","spidol","meja","kursi","tas","buku","penghapus","jam","kipas","jendela","pintu","laci","rak","proyektor","stopkontak","gorden"] },
+  { title: "Di Dapur", items: ["kompor","panci","wajan","sendok","garpu","pisau","kulkas","blender","rice cooker","saringan","piring","gelas","talenan","lap","bumbu","teko"] },
+  { title: "Di Kamar Tidur", items: ["kasur","bantal","guling","selimut","lemari","cermin","lampu","meja","jam","kipas","tirai","karpet","buku","charger","foto","pakaian"] },
+  { title: "Di Jalan", items: ["motor","mobil","lampu","trotoar","zebra cross","rambu","polisi","helm","klakson","aspal","ban","spion","ojek","halte","bus","truk"] },
+  { title: "Di Kantor", items: ["komputer","printer","meja","kursi","kabel","stopkontak","kertas","pulpen","map","lemari","AC","jam","telepon","notulen","scanner","ID card"] },
+  { title: "Benda Bulat", items: ["bola","piring","ban","koin","jam","donat","roti","kelereng","helm","apel","jeruk","balon","lensa","CD","tutup","tombol"] },
+  { title: "Benda Panjang", items: ["sapu","pensil","spidol","penggaris","kabel","tali","tongkat","sedotan","sendok","garpu","obeng","paku","ranting","payung","antena","tiang"] },
+  { title: "Alat Listrik", items: ["setrika","kipas","AC","kulkas","TV","radio","blender","mesin cuci","rice cooker","microwave","dispenser","charger","speaker","lampu","bor","vacuum"] },
+  { title: "Makanan Manis", items: ["permen","coklat","donat","kue","brownies","wafer","biskuit","es krim","martabak","pancake","gulali","dodol","cake","pie","pudding","roti"] },
+
+  { title: "Makanan Pedas", items: ["sambal","cabai","balado","rendang","seblak","cimol","mie pedas","rica","dendeng","ayam geprek","keripik","bakso","oseng","tongseng","pentol","rujak"] },
+  { title: "Di Kamar Mandi", items: ["sabun","sampo","handuk","ember","gayung","cermin","sikat","toilet","shower","keran","lantai","rak","gantungan","pewangi","tisu","kran"] },
+  { title: "Di Sekolah", items: ["bel","kelas","guru","murid","seragam","tas","buku","lapangan","kantin","perpustakaan","papan tulis","ujian","upacara","absen","rapor","lonceng"] },
+  { title: "Alat Musik", items: ["gitar","piano","drum","biola","seruling","bass","saxophone","terompet","ukulele","harmonika","kendang","rebana","angklung","kolintang","cello","harpa"] },
+  { title: "Hewan Darat", items: ["kucing","anjing","kuda","sapi","kambing","kelinci","gajah","harimau","singa","monyet","beruang","rusa","zebra","badak","serigala","unta"] },
+  { title: "Hewan Air", items: ["ikan","hiu","paus","lumba","gurita","udang","kepiting","kerang","belut","lele","pari","cumi","penyu","teripang","ikan mas","ikan nila"] },
+  { title: "Hewan Terbang", items: ["burung","elang","merpati","pipit","bangau","kelelawar","ayam","bebek","angsa","kakatua","nuri","rajawali","flamingo","gagak","camar","kolibri"] },
+  { title: "Profesi", items: ["dokter","guru","polisi","tentara","pilot","pramugari","koki","arsitek","nelayan","petani","montir","desainer","programmer","penulis","wartawan","fotografer"] },
+  { title: "Perasaan", items: ["senang","sedih","marah","takut","cemas","tenang","bingung","kecewa","bahagia","kesal","malu","bangga","iri","rindu","lega","curiga"] },
+  { title: "Cuaca", items: ["hujan","panas","dingin","berangin","mendung","cerah","petir","badai","kabut","gerimis","salju","kering","lembab","terik","gelap","terang"] },
+
+  { title: "Benda Kecil", items: ["kunci","koin","peniti","jarum","paku","klip","tombol","karet","baut","mur","stiker","kancing","chip","SIM","flashdisk","cincin"] },
+  { title: "Benda Berat", items: ["lemari","meja","sofa","kasur","kulkas","mesin","motor","mobil","brankas","piano","patung","beban","rak besi","generator","alat press","kompor gas"] },
+  { title: "Di Pasar", items: ["sayur","ikan","ayam","buah","timbangan","kantong","pedagang","uang","keranjang","cabai","bawang","beras","tahu","tempe","es","plastik"] },
+  { title: "Bau Khas", items: ["kopi","minyak","bensin","tanah","hujan","asap","parfum","keringat","sabun","sampah","karet","ikan","dapur","obat","alkohol","karbol"] },
+  { title: "Benda Transparan", items: ["kaca","gelas","air","plastik","lensa","botol","mika","jendela","akuarium","kristal","es","lampu","tabung","screen","visor","cermin"] },
+  { title: "Benda Tajam", items: ["pisau","silet","gunting","paku","jarum","belati","kapak","gergaji","cutter","parang","pedang","tombak","panah","serpihan","pecahan","kuku"] },
+  { title: "Mainan", items: ["boneka","lego","mobil-mobilan","bola","layangan","yoyo","gasing","puzzle","robot","slime","kelereng","balok","pistol air","boardgame","drone","tamiya"] },
+  { title: "Alat Olahraga", items: ["bola","raket","net","sepatu","matras","barbel","helm","sarung tinju","bet","tongkat","peluit","stopwatch","cones","rompi","pelindung","skate"] },
+  { title: "Di Rumah", items: ["pintu","jendela","atap","lantai","dinding","sofa","meja","kursi","TV","remote","kipas","lampu","karpet","lemari","jam","rak"] }
+];
+
+function App() {
+  const [idx, setIdx] = React.useState(0);
+
+  const nextTheme = () => {
+    let n;
+    do {
+      n = Math.floor(Math.random() * THEMES.length);
+    } while (n === idx);
+    setIdx(n);
+  };
+
+  const theme = THEMES[idx];
+
+  return (
+    <div className="rotate">
+      <div className="wrapper">
+        <div className="card">
+
+          <button className="theme-btn" onClick={nextTheme}>
+            {theme.title}
+            <span>({idx + 1}/{THEMES.length})</span>
+          </button>
+
+          <div className="grid-area">
+            <div></div>
+            <div className="col-labels">
+              {["A","B","C","D"].map(l => <div key={l}>{l}</div>)}
+            </div>
+
+            <div className="row-labels">
+              {["1","2","3","4"].map(n => <div key={n}>{n}</div>)}
+            </div>
+
+            <div className="grid">
+              {theme.items.map((word, i) => {
+                const row = Math.floor(i / 4);
+                const col = i % 4;
+                const checker = (row + col) % 2 === 0 ? "dark" : "light";
+                return (
+                  <div key={i} className={`cell ${checker}`}>
+                    {word}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="footer">
+            Dibuat oleh <a href="https://instagram.com/ukiek" target="_blank">@ukiek</a> |
+            <a href="mailto:syaukidear@gmail.com"> syaukidear@gmail.com</a> [2026]
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
