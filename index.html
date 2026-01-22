@@ -1,220 +1,198 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Mime</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>The Mime</title>
 
-<style>
-:root{
-  --cyan:#4ddcff;
-  --orange:#ffb14a;
-  --soft-blue:#1e3a5f;
-  --gray:#9ca3af;
+  <!-- React CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-  --bg:#0b1220;
-  --panel:#0f172a;
+  <!-- Condensed font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 
-  --catur-a:#0f4c5c;
-  --catur-b:#1f2933;
+  <style>
+    * { box-sizing: border-box; }
 
-  --text:#e5e7eb;
-}
+    body {
+      margin: 0;
+      background: #0e1a1a;
+      color: #fff;
+      font-family: 'Roboto Condensed', system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-*{
-  box-sizing:border-box;
-  font-family:
-    "Roboto Condensed",
-    "Arial Narrow",
-    system-ui,
-    sans-serif;
-}
+    .wrapper {
+      width: 100%;
+      padding: 3vh 5vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  overflow:hidden;
-}
+    .card {
+      width: 100%;
+      max-width: 90vw;
+      max-height: 88vh;
+      aspect-ratio: 4 / 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-/* ROTATE LANDSCAPE */
-.rotate{
-  width:100vh;
-  height:100vw;
-  transform:rotate(90deg);
-  transform-origin:top left;
-  position:absolute;
-  top:0;
-  left:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    .theme-btn {
+      align-self: center;
+      background: #6faec9;
+      color: #102030;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: fit-content;
+    }
 
-/* APP WRAPPER */
-.app{
-  width:100%;
-  height:100%;
-  padding:3vh 5vw; /* ⬅️ SPACING UTAMA */
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
+    .theme-btn span {
+      color: #777;
+      font-weight: 400;
+      margin-left: 6px;
+    }
 
-/* THEME BUTTON */
-.theme-btn{
-  align-self:center;
-  background:var(--soft-blue);
-  color:#e0f2fe;
-  border:none;
-  border-radius:16px;
-  padding:10px 20px;
-  font-size:20px;
-  font-weight:700;
-  cursor:pointer;
-}
+    .grid-area {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px;
+      flex: 1;
+      margin-top: 8px;
+    }
 
-.theme-btn span{
-  color:var(--gray);
-  font-weight:500;
-}
+    .col-labels {
+      grid-column: 2;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+      color: cyan;
+      font-weight: 700;
+    }
 
-/* GRID CONTAINER */
-.grid-wrapper{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+    .row-labels {
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+      justify-items: center;
+      align-items: center;
+      color: orange;
+      font-weight: 700;
+    }
 
-/* GRID */
-.grid{
-  width:100%;
-  display:grid;
-  grid-template-columns:42px repeat(4,1fr);
-  gap:10px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 4px;
+    }
 
-/* HEADERS */
-.col{
-  text-align:center;
-  font-weight:700;
-  color:var(--cyan);
-}
+    .cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6px;
+      font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+      border-radius: 6px;
+    }
 
-.row{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-weight:700;
-  color:var(--orange);
-}
+    .cell:nth-child(odd) {
+      background: #0f3f3f;
+    }
 
-/* CELL */
-.cell{
-  border-radius:14px;
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:6px 8px;
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:0.5px;
-}
+    .cell:nth-child(even) {
+      background: #2b2b2b;
+    }
 
-.cell.a{background:var(--catur-a)}
-.cell.b{background:var(--catur-b)}
+    .footer {
+      margin-top: 6px;
+      font-size: 0.65rem;
+      color: #888;
+      text-align: center;
+    }
 
-/* FOOTER */
-.footer{
-  text-align:center;
-  font-size:10px;
-  color:var(--gray);
-}
-
-.footer a{
-  color:var(--gray);
-  text-decoration:none;
-}
-</style>
+    .footer a {
+      color: #888;
+      text-decoration: none;
+    }
+  </style>
 </head>
-
 <body>
-<div class="rotate">
-  <div class="app">
 
-    <button class="theme-btn" onclick="randomTheme()">
-      <span id="themeTitle"></span>
-    </button>
+<div id="root"></div>
 
-    <div class="grid-wrapper">
-      <div class="grid" id="grid"></div>
-    </div>
+<script type="text/babel">
+const THEMES = [
+  { title: "Barang Merah", items: ["apel","helm","tas","baju","kursi","botol","sepatu","topi","lipstik","ember","spidol","jaket","dompet","payung","mobil","bantal"] },
+  { title: "Barang Biru", items: ["galon","seragam","pulpen","kursi","ember","map","tas","sandal","keranjang","selimut","toples","helm","penghapus","buku","jaket","botol"] },
+  { title: "Barang Hijau", items: ["daun","botol","tas","kursi","helm","toples","sapu","piring","payung","sepatu","jaket","penghapus","kotak","map","ember","sabun"] },
+  { title: "Di Dalam Kelas", items: ["papan","spidol","meja","kursi","tas","buku","penghapus","jam","kipas","jendela","pintu","laci","rak","proyektor","stopkontak","gorden"] },
+  { title: "Di Kantin", items: ["sendok","garpu","nasi","gelas","meja","kursi","kompor","wajan","panci","saus","kecap","air","tisu","nampan","kantong","sumpit"] },
+  { title: "Di Terminal Bus", items: ["bangku","koper","tiket","loket","jam","papan","tas","bus","ban","klakson","topi","rompi","spanduk","botol","helm","peluit"] },
+  { title: "Di Stasiun", items: ["peron","tiket","koper","jam","bangku","rel","kereta","topi","tas","rompi","papan","speaker","tangga","lift","pintu","lampu"] },
+  { title: "Di Mall", items: ["eskalator","lift","etalase","manekin","tas","sepatu","baju","lampu","papan","kursi","meja","kasir","struk","troli","cermin","poster"] },
+  { title: "Di Parkiran", items: ["mobil","motor","helm","karcis","portal","lantai","rambu","lampu","ban","kunci","spion","knalpot","tas","jaket","rantai","kamera"] },
+  { title: "Di Lapangan", items: ["bola","gawang","peluit","sepatu","kaos","topi","botol","rumput","garis","bendera","bangku","jam","tas","handuk","lampu","net"] },
 
-    <div class="footer">
-      Dibuat oleh
-      <a href="https://instagram.com/ukiek" target="_blank">@ukiek</a>
-      |
-      <a href="mailto:syaukidear@gmail.com">syaukidear@gmail.com</a>
-    </div>
-
-  </div>
-</div>
-
-<script>
-const themes = [
-{t:"Barang Merah",w:["apel","tas","helm","sepatu","botol","kursi","buku","pulpen","topi","ember","dompet","lampu","kaos","piring","sandal","kabel"]},
-{t:"Barang Biru",w:["botol","tas","pulpen","ember","buku","kursi","helm","sepatu","map","kotak","kaos","gelas","kipas","jam","panci","sapu"]},
-{t:"Barang Hijau",w:["daun","botol","tas","ember","kursi","buku","pulpen","map","helm","kotak","kaos","gelas","jam","piring","sendok","sapu"]},
-{t:"Barang Kuning",w:["pisang","tas","topi","ember","buku","pulpen","helm","kotak","kursi","sepatu","gelas","kaos","lampu","jam","sapu","sendok"]},
-// (tema lain tetap, total 40)
+  /* total 40 — dipadatkan contoh */
 ];
 
-let current=0;
+function App() {
+  const [index, setIndex] = React.useState(0);
 
-function render(i){
- const th=themes[i];
- document.getElementById("themeTitle").innerHTML=
- `${th.t} <span>(${i+1}/40)</span>`;
+  const nextTheme = () => {
+    let next;
+    do {
+      next = Math.floor(Math.random() * THEMES.length);
+    } while (next === index);
+    setIndex(next);
+  };
 
- const g=document.getElementById("grid");
- g.innerHTML="";
+  const theme = THEMES[index];
 
- g.appendChild(document.createElement("div"));
- ["A","B","C","D"].forEach(c=>{
-   let d=document.createElement("div");
-   d.className="col";
-   d.textContent=c;
-   g.appendChild(d);
- });
+  return (
+    <div className="wrapper">
+      <div className="card">
+        <button className="theme-btn" onClick={nextTheme}>
+          {theme.title}
+          <span>({index + 1}/{THEMES.length})</span>
+        </button>
 
- let k=0;
- for(let r=1;r<=4;r++){
-   let rh=document.createElement("div");
-   rh.className="row";
-   rh.textContent=r;
-   g.appendChild(rh);
+        <div className="grid-area">
+          <div></div>
+          <div className="col-labels">{["A","B","C","D"].map(l => <div key={l}>{l}</div>)}</div>
 
-   for(let c=0;c<4;c++){
-     let cell=document.createElement("div");
-     cell.className="cell "+((r+c)%2==0?"a":"b");
-     cell.textContent=th.w[k++];
-     g.appendChild(cell);
-   }
- }
+          <div className="row-labels">{["1","2","3","4"].map(n => <div key={n}>{n}</div>)}</div>
+
+          <div className="grid">
+            {theme.items.map((word, i) => (
+              <div className="cell" key={i}>{word}</div>
+            ))}
+          </div>
+        </div>
+
+        <div className="footer">
+          Dibuat oleh <a href="https://instagram.com/ukiek" target="_blank">@ukiek</a> |
+          <a href="mailto:syaukidear@gmail.com"> syaukidear@gmail.com</a> [2026]
+        </div>
+      </div>
+    </div>
+  );
 }
 
-function randomTheme(){
- let n;
- do{ n=Math.floor(Math.random()*themes.length); }
- while(n===current);
- current=n;
- render(current);
-}
-
-render(current);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
+
 </body>
-</html>
+</html>html
