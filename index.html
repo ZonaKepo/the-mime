@@ -1,242 +1,232 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Mime</title>
 
 <style>
-:root {
-  --cyan: #3dd5f3;
-  --orange: #ff9f43;
-  --soft-blue: #dbeafe;
-  --gray: #888;
+:root{
+  --cyan:#3dd5f3;
+  --orange:#ff9f43;
+  --soft-blue:#dbeafe;
+  --gray:#888;
+  --catur-a:#ffe8cc;
+  --catur-b:#f1f1f1;
 }
 
-* {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+*{box-sizing:border-box;font-family:system-ui}
+
+body{
+  margin:0;
+  background:#f8fafc;
+  overflow:hidden;
 }
 
-body {
-  margin: 0;
-  background: #f8fafc;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ROTATE CONTAINER */
+.rotate {
+  width:100vh;
+  height:100vw;
+  transform:rotate(90deg);
+  transform-origin:top left;
+  position:absolute;
+  top:0;
+  left:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-.app {
-  width: 100%;
-  max-width: 500px;
-  padding: 16px;
+.app{
+  width:100%;
+  max-width:520px;
+  padding:16px;
 }
 
-.theme-btn {
-  display: inline-block;
-  background: var(--soft-blue);
-  color: #1e3a8a;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: none;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 16px;
+/* THEME BUTTON */
+.theme-btn{
+  background:var(--soft-blue);
+  border:none;
+  border-radius:14px;
+  padding:10px 18px;
+  font-size:18px;
+  font-weight:600;
+  cursor:pointer;
+  display:block;
+  margin:0 auto 16px auto;
 }
 
-.theme-btn span {
-  color: var(--gray);
-  font-weight: 500;
+.theme-btn span{
+  color:var(--gray);
+  font-weight:500;
 }
 
-.grid-wrapper {
-  display: grid;
-  grid-template-columns: 40px repeat(4, 1fr);
-  gap: 8px;
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:36px repeat(4,1fr);
+  gap:8px;
 }
 
-.col-header {
-  text-align: center;
-  font-weight: 700;
-  color: var(--cyan);
+.col{
+  text-align:center;
+  font-weight:700;
+  color:var(--cyan);
 }
 
-.row-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: var(--orange);
+.row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  color:var(--orange);
 }
 
-.cell {
-  background: #ffffff;
-  border-radius: 12px;
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  text-align: center;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+.cell{
+  border-radius:12px;
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:6px;
+  font-size:14px;
 }
+
+/* CHESS COLOR */
+.cell.a{background:var(--catur-a)}
+.cell.b{background:var(--catur-b)}
 </style>
 </head>
 
 <body>
-<div class="app">
-  <button class="theme-btn" onclick="randomTheme()">
-    <span id="themeTitle"></span>
-  </button>
+<div class="rotate">
+  <div class="app">
+    <button class="theme-btn" onclick="randomTheme()">
+      <span id="themeTitle"></span>
+    </button>
 
-  <div class="grid-wrapper" id="grid"></div>
+    <div class="grid" id="grid"></div>
+  </div>
 </div>
 
 <script>
 const themes = [
-  {
-    title: "Listrik Mati",
-    words: [
-      "lilin panik","kipas bengong","guling gerah","nangis colokan",
-      "nyari saklar","mati gaya","bayangan serem","charger nganggur",
-      "gelap total","kulkas pasrah","kipas lelah","HP sekarat",
-      "lampu merana","AC pensiun","nyamuk pesta","sunyi brutal"
-    ]
-  },
-  {
-    title: "Alat Tawuran",
-    words: [
-      "gayung retak","sendok somay","hair dryer","selendang polkadot",
-      "sapu bengkok","helm bocor","sendal jepit","bantal lemas",
-      "ember penyok","hanger besi","talenan kayu","kabel kusut",
-      "payung terbalik","panci tipis","sisir patah","kipas mini"
-    ]
-  },
-  {
-    title: "Tidur Aneh",
-    words: [
-      "tidur berdiri","ketiduran zoom","bantal melayang","ngorok publik",
-      "selimut hilang","mimpi jatuh","tidur nyempil","melek setengah",
-      "bangun salah","alarm dibanting","posisi salah","leher korban",
-      "tidur sok kuat","rebahan abadi","ketindihan","bangun kaget"
-    ]
-  },
-  {
-    title: "Bau Misterius",
-    words: [
-      "bau hujan","bau ketek","bau lemari","bau motor",
-      "bau gosong","bau kaus kaki","bau kulkas","bau sandal",
-      "bau tanah","bau aneh","bau basah","bau plastik",
-      "bau amis","bau asap","bau jajan","bau nostalgia"
-    ]
-  },
-  {
-    title: "Emosi Publik",
-    words: [
-      "senyum palsu","ketawa sendiri","panik sunyi","malu nasional",
-      "marah halus","sok santai","nahan emosi","nangis dalem",
-      "bingung total","salah fokus","overthinking","bete umum",
-      "salting publik","awkward diam","mati gaya","krisis sikap"
-    ]
-  },
-  {
-    title: "Gerakan Aneh",
-    words: [
-      "kedip berlebihan","jalan miring","lompat refleks","duduk salah",
-      "lari kecil","putar badan","noleh cepat","geleng lambat",
-      "angkat bahu","tepuk bingung","garuk udara","nunjuk kosong",
-      "membeku","loncat panik","gerak salah","diam tegang"
-    ]
-  },
-  {
-    title: "Benda Hidup",
-    words: [
-      "kursi capek","meja cemburu","lemari galau","sendok curiga",
-      "pintu sensitif","kipas bete","kulkas dingin","bantal posesif",
-      "tas lelah","sepatu jutek","gelas trauma","sapu iri",
-      "jam stres","remote marah","lampu insecure","karpet pasrah"
-    ]
-  },
-  {
-    title: "Kejadian Malu",
-    words: [
-      "salah masuk","nyapa salah","ketawa sendiri","jatuh pelan",
-      "salah kirim","mic nyala","salah sebut","zoom kebuka",
-      "chat bocor","pakaian kebalik","salah duduk","lupa nama",
-      "salah pintu","salah lift","salah senyum","salah fokus"
-    ]
-  },
-  {
-    title: "Suara Aneh",
-    words: [
-      "klik misterius","desis pelan","gedebuk tiba","kring sunyi",
-      "tok halus","krek kecil","ngiiing jauh","bluk berat",
-      "tik random","whoosh kosong","plek lembut","dug pendek",
-      "crash imajiner","buzz halus","pop aneh","sunyi keras"
-    ]
-  },
-  {
-    title: "Situasi Absurd",
-    words: [
-      "antri sendiri","tepuk sepi","nunggu kosong","janji batal",
-      "datang kepagian","datang telat","salah hari","salah mood",
-      "niat gagal","fokus pecah","mikir keras","bingung ringan",
-      "diam rame","rame sunyi","gerak salah","ketawa telat"
-    ]
-  }
+{
+ title:"Listrik Mati",
+ words:["lilin","kipas","gerah","gelap",
+        "saklar","sunyi","bayangan","colokan",
+        "charger","panik","nyamuk","kulkas",
+        "AC","mati gaya","malam","diam"]
+},
+{
+ title:"Alat Tawuran",
+ words:["gayung","sendok","hairdryer","selendang",
+        "sapu","ember","hanger","bantal",
+        "helm","panci","talenan","kabel",
+        "payung","sisir","sendal","kipas"]
+},
+{
+ title:"Tidur Aneh",
+ words:["berdiri","zoom","ngorok","jatuh",
+        "selimut","mimpi","ketindihan","bangun",
+        "alarm","bantal","leher","salah",
+        "rebahan","ngantuk","kaget","diam"]
+},
+{
+ title:"Bau Misterius",
+ words:["ketek","hujan","lemari","gosong",
+        "kulkas","sandal","amis","asap",
+        "tanah","plastik","basah","tajam",
+        "aneh","sunyi","debu","nostalgia"]
+},
+{
+ title:"Emosi Publik",
+ words:["salting","bete","malu","panik",
+        "senyum","awkward","bingung","diam",
+        "overthinking","nahan","ketawa","galau",
+        "salah fokus","tegang","santai","garing"]
+},
+{
+ title:"Gerakan Aneh",
+ words:["kedip","lompat","noleh","beku",
+        "garuk","putar","lari","jongkok",
+        "tepuk","miring","loncat","diam",
+        "geleng","salah","refleks","bingung"]
+},
+{
+ title:"Benda Hidup",
+ words:["kursi","meja","lemari","sendok",
+        "pintu","kipas","kulkas","bantal",
+        "tas","sepatu","gelas","jam",
+        "remote","lampu","sapu","karpet"]
+},
+{
+ title:"Kejadian Malu",
+ words:["nyapa","jatuh","mic","zoom",
+        "salah kirim","chat","pakaian","nama",
+        "duduk","senyum","lift","pintu",
+        "hari","fokus","telat","diam"]
+},
+{
+ title:"Suara Aneh",
+ words:["klik","krek","desis","gedebuk",
+        "kring","buzz","tok","pop",
+        "whoosh","tik","plek","dug",
+        "crash","sunyi","ngiiing","halus"]
+},
+{
+ title:"Situasi Absurd",
+ words:["antri","nunggu","kosong","tepuk",
+        "janji","batal","niat","gagal",
+        "datang","telat","mikir","diam",
+        "rame","sunyi","bingung","salah"]
+}
 ];
 
-let currentIndex = 0;
+let current=0;
 
-function renderTheme(index) {
-  const theme = themes[index];
-  document.getElementById("themeTitle").innerHTML =
-    `${theme.title} <span>(${index + 1}/10)</span>`;
+function render(i){
+ const t=themes[i];
+ document.getElementById("themeTitle").innerHTML=
+ `${t.title} <span>(${i+1}/10)</span>`;
 
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
+ const g=document.getElementById("grid");
+ g.innerHTML="";
 
-  // empty corner
-  grid.appendChild(document.createElement("div"));
+ g.appendChild(document.createElement("div"));
+ ["A","B","C","D"].forEach(c=>{
+   let d=document.createElement("div");
+   d.className="col";
+   d.textContent=c;
+   g.appendChild(d);
+ });
 
-  // column headers
-  ["A","B","C","D"].forEach(h => {
-    const div = document.createElement("div");
-    div.className = "col-header";
-    div.textContent = h;
-    grid.appendChild(div);
-  });
+ let idx=0;
+ for(let r=1;r<=4;r++){
+   let rh=document.createElement("div");
+   rh.className="row";
+   rh.textContent=r;
+   g.appendChild(rh);
 
-  let wordIndex = 0;
-  for (let row = 1; row <= 4; row++) {
-    const rowHeader = document.createElement("div");
-    rowHeader.className = "row-header";
-    rowHeader.textContent = row;
-    grid.appendChild(rowHeader);
-
-    for (let col = 0; col < 4; col++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.textContent = theme.words[wordIndex++];
-      grid.appendChild(cell);
-    }
-  }
+   for(let c=0;c<4;c++){
+     let cell=document.createElement("div");
+     cell.className="cell "+((r+c)%2==0?"a":"b");
+     cell.textContent=t.words[idx++];
+     g.appendChild(cell);
+   }
+ }
 }
 
-function randomTheme() {
-  let next;
-  do {
-    next = Math.floor(Math.random() * themes.length);
-  } while (next === currentIndex);
-
-  currentIndex = next;
-  renderTheme(currentIndex);
+function randomTheme(){
+ let n;
+ do{ n=Math.floor(Math.random()*themes.length); }
+ while(n===current);
+ current=n;
+ render(current);
 }
 
-renderTheme(currentIndex);
+render(current);
 </script>
 </body>
 </html>
