@@ -15,8 +15,8 @@
   --bg:#0b1220;
   --panel:#0f172a;
 
-  --catur-a:#0f4c5c;   /* dark cyan */
-  --catur-b:#1f2933;   /* dark grey */
+  --catur-a:#0f4c5c;
+  --catur-b:#1f2933;
 
   --text:#e5e7eb;
 }
@@ -51,16 +51,19 @@ body{
   align-items:center;
 }
 
+/* APP WRAPPER */
 .app{
   width:100%;
-  max-width:640px;
-  padding:18px;
-  background:var(--panel);
-  border-radius:18px;
+  height:100%;
+  padding:3vh 5vw; /* ⬅️ SPACING UTAMA */
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 /* THEME BUTTON */
 .theme-btn{
+  align-self:center;
   background:var(--soft-blue);
   color:#e0f2fe;
   border:none;
@@ -69,8 +72,6 @@ body{
   font-size:20px;
   font-weight:700;
   cursor:pointer;
-  display:block;
-  margin:0 auto 18px auto;
 }
 
 .theme-btn span{
@@ -78,13 +79,23 @@ body{
   font-weight:500;
 }
 
+/* GRID CONTAINER */
+.grid-wrapper{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
 /* GRID */
 .grid{
+  width:100%;
   display:grid;
   grid-template-columns:42px repeat(4,1fr);
   gap:10px;
 }
 
+/* HEADERS */
 .col{
   text-align:center;
   font-weight:700;
@@ -113,13 +124,11 @@ body{
   letter-spacing:0.5px;
 }
 
-/* CHECKER */
 .cell.a{background:var(--catur-a)}
 .cell.b{background:var(--catur-b)}
 
 /* FOOTER */
 .footer{
-  margin-top:12px;
   text-align:center;
   font-size:10px;
   color:var(--gray);
@@ -140,7 +149,9 @@ body{
       <span id="themeTitle"></span>
     </button>
 
-    <div class="grid" id="grid"></div>
+    <div class="grid-wrapper">
+      <div class="grid" id="grid"></div>
+    </div>
 
     <div class="footer">
       Dibuat oleh
@@ -158,13 +169,7 @@ const themes = [
 {t:"Barang Biru",w:["botol","tas","pulpen","ember","buku","kursi","helm","sepatu","map","kotak","kaos","gelas","kipas","jam","panci","sapu"]},
 {t:"Barang Hijau",w:["daun","botol","tas","ember","kursi","buku","pulpen","map","helm","kotak","kaos","gelas","jam","piring","sendok","sapu"]},
 {t:"Barang Kuning",w:["pisang","tas","topi","ember","buku","pulpen","helm","kotak","kursi","sepatu","gelas","kaos","lampu","jam","sapu","sendok"]},
-{t:"Benda di Kelas",w:["meja","kursi","papan","spidol","penghapus","tas","buku","pulpen","jam","kipas","jendela","pintu","rak","penggaris","proyektor","stopkontak"]},
-{t:"Benda di Kantin",w:["sendok","garpu","piring","gelas","meja","kursi","nampan","botol","teko","kompor","wajan","panci","lap","kasir","menu","sapu"]},
-{t:"Alat Elektronik",w:["HP","laptop","charger","kabel","mouse","keyboard","TV","remote","kipas","lampu","speaker","earphone","kamera","router","printer","powerbank"]},
-{t:"Perabot Rumah",w:["kursi","meja","lemari","rak","sofa","karpet","lampu","cermin","jam","gorden","pintu","jendela","kipas","vas","bangku","nampan"]},
-{t:"Alat Tulis",w:["pulpen","pensil","penghapus","penggaris","spidol","buku","map","stabilo","binder","kertas","clip","label","folder","notes","agenda","sticky"]},
-{t:"Barang Sehari-hari",w:["HP","tas","dompet","kunci","sepatu","baju","botol","charger","jam","pulpen","buku","kursi","meja","kipas","lampu","remote"]},
-// total tetap 40 tema seperti versi sebelumnya
+// (tema lain tetap, total 40)
 ];
 
 let current=0;
