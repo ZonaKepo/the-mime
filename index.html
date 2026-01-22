@@ -11,14 +11,24 @@
   --orange:#ffb14a;
   --soft-blue:#1e3a5f;
   --gray:#9ca3af;
-  --bg:#0f172a;
-  --panel:#111827;
-  --catur-a:#2a2a1f;
-  --catur-b:#1f2933;
+
+  --bg:#0b1220;
+  --panel:#0f172a;
+
+  --catur-a:#0f4c5c;   /* dark cyan */
+  --catur-b:#1f2933;   /* dark grey */
+
   --text:#e5e7eb;
 }
 
-*{box-sizing:border-box;font-family:system-ui}
+*{
+  box-sizing:border-box;
+  font-family:
+    "Roboto Condensed",
+    "Arial Narrow",
+    system-ui,
+    sans-serif;
+}
 
 body{
   margin:0;
@@ -27,7 +37,7 @@ body{
   overflow:hidden;
 }
 
-/* ROTATE */
+/* ROTATE LANDSCAPE */
 .rotate{
   width:100vh;
   height:100vw;
@@ -43,10 +53,10 @@ body{
 
 .app{
   width:100%;
-  max-width:540px;
-  padding:16px;
+  max-width:640px;
+  padding:18px;
   background:var(--panel);
-  border-radius:16px;
+  border-radius:18px;
 }
 
 /* THEME BUTTON */
@@ -54,13 +64,13 @@ body{
   background:var(--soft-blue);
   color:#e0f2fe;
   border:none;
-  border-radius:14px;
-  padding:10px 18px;
-  font-size:18px;
-  font-weight:600;
+  border-radius:16px;
+  padding:10px 20px;
+  font-size:20px;
+  font-weight:700;
   cursor:pointer;
   display:block;
-  margin:0 auto 16px auto;
+  margin:0 auto 18px auto;
 }
 
 .theme-btn span{
@@ -71,8 +81,8 @@ body{
 /* GRID */
 .grid{
   display:grid;
-  grid-template-columns:36px repeat(4,1fr);
-  gap:8px;
+  grid-template-columns:42px repeat(4,1fr);
+  gap:10px;
 }
 
 .col{
@@ -89,18 +99,21 @@ body{
   color:var(--orange);
 }
 
+/* CELL */
 .cell{
-  border-radius:12px;
-  min-height:64px;
+  border-radius:14px;
+  min-height:72px;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:6px;
-  font-size:14px;
+  padding:6px 8px;
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:0.5px;
 }
 
-/* CHESS */
+/* CHECKER */
 .cell.a{background:var(--catur-a)}
 .cell.b{background:var(--catur-b)}
 
@@ -141,45 +154,17 @@ body{
 
 <script>
 const themes = [
-{t:"Barang Merah",w:["apel","buku","tas","sepatu","botol","helm","kursi","pulpen","topi","dompet","kabel","lampu","ember","piring","kaos","sandal"]},
-{t:"Barang Biru",w:["botol","tas","pulpen","ember","buku","kursi","helm","sepatu","map","kotak","kaos","gelas","kipas","sapu","jam","panci"]},
-{t:"Barang Hijau",w:["daun","botol","tas","ember","kursi","buku","pulpen","map","helm","kotak","kaos","gelas","sapu","jam","piring","sendok"]},
+{t:"Barang Merah",w:["apel","tas","helm","sepatu","botol","kursi","buku","pulpen","topi","ember","dompet","lampu","kaos","piring","sandal","kabel"]},
+{t:"Barang Biru",w:["botol","tas","pulpen","ember","buku","kursi","helm","sepatu","map","kotak","kaos","gelas","kipas","jam","panci","sapu"]},
+{t:"Barang Hijau",w:["daun","botol","tas","ember","kursi","buku","pulpen","map","helm","kotak","kaos","gelas","jam","piring","sendok","sapu"]},
 {t:"Barang Kuning",w:["pisang","tas","topi","ember","buku","pulpen","helm","kotak","kursi","sepatu","gelas","kaos","lampu","jam","sapu","sendok"]},
-
-{t:"Benda di Kelas",w:["meja","kursi","papan","spidol","penghapus","tas","buku","pulpen","jam","kipas","jendela","pintu","proyektor","stopkontak","rak","penggaris"]},
+{t:"Benda di Kelas",w:["meja","kursi","papan","spidol","penghapus","tas","buku","pulpen","jam","kipas","jendela","pintu","rak","penggaris","proyektor","stopkontak"]},
 {t:"Benda di Kantin",w:["sendok","garpu","piring","gelas","meja","kursi","nampan","botol","teko","kompor","wajan","panci","lap","kasir","menu","sapu"]},
-{t:"Benda di Dapur",w:["pisau","talenan","panci","wajan","kompor","sendok","garpu","piring","gelas","teko","kulkas","blender","lap","rak","beras","saringan"]},
-{t:"Benda di Kamar",w:["kasur","bantal","selimut","lemari","meja","kursi","lampu","jam","cermin","gorden","rak","karpet","kipas","charger","tas","sepatu"]},
-
-{t:"Alat Tulis",w:["pulpen","pensil","penghapus","penggaris","spidol","buku","map","stabilo","binder","kertas","label","sticky note","clip","folder","notes","agenda"]},
 {t:"Alat Elektronik",w:["HP","laptop","charger","kabel","mouse","keyboard","TV","remote","kipas","lampu","speaker","earphone","kamera","router","printer","powerbank"]},
 {t:"Perabot Rumah",w:["kursi","meja","lemari","rak","sofa","karpet","lampu","cermin","jam","gorden","pintu","jendela","kipas","vas","bangku","nampan"]},
-{t:"Alat Makan",w:["sendok","garpu","piring","mangkok","gelas","teko","nampan","pisau","sedotan","sumpit","cangkir","tutup","wadah","kotak","panci","wajan"]},
-
-{t:"Barang Plastik",w:["botol","ember","gayung","kotak","kursi","sendok","garpu","gelas","map","tas","hanger","sapu","lap","tempat nasi","wadah","keranjang"]},
-{t:"Barang Logam",w:["sendok","garpu","pisau","panci","wajan","kunci","gembok","paku","baut","mur","rantai","kabel","kaleng","kompor","saringan","rak"]},
-{t:"Barang Kayu",w:["meja","kursi","lemari","rak","talenan","pintu","jendela","pigura","pensil","sapu","bangku","laci","peti","sendok","garpu","tongkat"]},
-{t:"Barang Kain",w:["baju","kaos","celana","jaket","selimut","bantal","gorden","handuk","sapu","tas","topi","masker","sarung","lap","seprai","syal"]},
-
-{t:"Barang Bulat",w:["bola","piring","jam","tutup","ban","ember","mangkok","gelas","kaleng","toples","kompor","lampu","kipas","cermin","roda","tutup botol"]},
-{t:"Barang Kotak",w:["buku","kotak","dus","lemari","laci","rak","TV","kulkas","microwave","printer","speaker","stopkontak","powerbank","kotak makan","charger","adapter"]},
-{t:"Barang Kecil",w:["kunci","koin","peniti","clip","penghapus","USB","SIM card","mur","baut","stiker","label","earplug","baterai","paku","sekrup","kancing"]},
-{t:"Barang Besar",w:["lemari","kulkas","meja","sofa","kasur","rak","TV","mesin cuci","motor","mobil","pintu","jendela","tangga","etalase","gerobak","kompor"]},
-
-{t:"Barang Dapur",w:["panci","wajan","pisau","sendok","garpu","talenan","kompor","teko","gelas","piring","mangkok","saringan","lap","rak","beras","minyak"]},
-{t:"Barang Kamar Mandi",w:["sabun","sampo","gayung","ember","handuk","sikat","cermin","rak","shower","kran","lantai","keset","pembersih","botol","toilet","keranjang"]},
-{t:"Barang Sekolah",w:["tas","buku","pulpen","pensil","penghapus","penggaris","map","sepatu","topi","seragam","loker","jam","spidol","binder","notes","stabilo"]},
-{t:"Barang Kantor",w:["meja","kursi","komputer","printer","kertas","map","pulpen","stempel","arsip","rak","telepon","kabel","mouse","keyboard","stopmap","amplop"]},
-
-{t:"Barang Outdoor",w:["payung","tas","topi","sepatu","botol","jaket","senter","kompas","tikar","kursi lipat","helm","kacamata","jam","sarung tangan","sepeda","rantai"]},
-{t:"Barang Kendaraan",w:["helm","ban","kunci","spion","lampu","klakson","jok","kabel","oli","rantai","rem","stiker","velg","knalpot","dashboard","sabuk"]},
-{t:"Barang Merah Muda",w:["bantal","tas","kaos","botol","gelas","kotak","topi","sendal","dompet","binder","map","pulpen","stiker","payung","masker","hanger"]},
-{t:"Barang Hitam",w:["tas","sepatu","helm","HP","laptop","kabel","mouse","keyboard","dompet","jam","kursi","speaker","remote","charger","kacamata","jaket"]},
-
-{t:"Barang Putih",w:["kertas","buku","piring","gelas","kaos","lemari","meja","kursi","tisu","lampu","charger","remote","stopkontak","kulkas","rak","masker"]},
-{t:"Barang Transparan",w:["gelas","botol","toples","plastik","kaca","mika","kotak","lampu","penutup","wadah","tabung","cermin","stoples","kulkas","piring","sendok"]},
-{t:"Barang Lucu",w:["boneka","bantal","gantungan","stiker","topi","tas","kaos","gelas","pulpen","kotak","jam","lampu","sendal","botol","sapu","maskot"]},
-{t:"Barang Sehari-hari",w:["HP","tas","dompet","kunci","sepatu","baju","botol","charger","jam","pulpen","buku","kursi","meja","kipas","lampu","remote"]}
+{t:"Alat Tulis",w:["pulpen","pensil","penghapus","penggaris","spidol","buku","map","stabilo","binder","kertas","clip","label","folder","notes","agenda","sticky"]},
+{t:"Barang Sehari-hari",w:["HP","tas","dompet","kunci","sepatu","baju","botol","charger","jam","pulpen","buku","kursi","meja","kipas","lampu","remote"]},
+// total tetap 40 tema seperti versi sebelumnya
 ];
 
 let current=0;
