@@ -1,224 +1,242 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>The Mime</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Mime</title>
 
-  <!-- React CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+:root {
+  --cyan: #3dd5f3;
+  --orange: #ff9f43;
+  --soft-blue: #dbeafe;
+  --gray: #888;
+}
 
-  <style>
-    html, body, #root {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      background: #111;
-      color: #fff;
-      font-family: system-ui, sans-serif;
-    }
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-    .app {
-      width: 100vw;
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      padding: 8px;
-      box-sizing: border-box;
-      gap: 8px;
-    }
+body {
+  margin: 0;
+  background: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .theme-button {
-      background: #222;
-      border: 2px solid #444;
-      color: #fff;
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 10px;
-    }
+.app {
+  width: 100%;
+  max-width: 500px;
+  padding: 16px;
+}
 
-    .theme-button:active {
-      background: #333;
-    }
+.theme-btn {
+  display: inline-block;
+  background: var(--soft-blue);
+  color: #1e3a8a;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
 
-    .grid {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      gap: 6px;
-    }
+.theme-btn span {
+  color: var(--gray);
+  font-weight: 500;
+}
 
-    .cell {
-      border: 1px solid #333;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-size: 14px;
-      padding: 4px;
-      background: #1a1a1a;
-    }
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: 40px repeat(4, 1fr);
+  gap: 8px;
+}
 
-    .label {
-      font-size: 12px;
-      opacity: 0.6;
-      position: absolute;
-      top: 4px;
-      left: 6px;
-    }
+.col-header {
+  text-align: center;
+  font-weight: 700;
+  color: var(--cyan);
+}
 
-    .cell-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
+.row-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.cell {
+  background: #ffffff;
+  border-radius: 12px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+</style>
 </head>
+
 <body>
-  <div id="root"></div>
+<div class="app">
+  <button class="theme-btn" onclick="randomTheme()">
+    <span id="themeTitle"></span>
+  </button>
 
-  <script>
-    const themes = [
-      {
-        id: 1,
-        title: "Listrik Mati",
-        words: [
-          "A1: lilin panik", "B1: kipas nganggur", "C1: colokan kosong", "D1: gelap sok dramatis",
-          "A2: charger dicari", "B2: HP 3%", "C2: doa sinyal", "D2: meraba tembok",
-          "A3: keringat pasrah", "B3: guling gerah", "C3: kipas manual", "D3: jendela dibuka",
-          "A4: meratapi langit", "B4: nyamuk pesta", "C4: sabar palsu", "D4: tidur cepat"
-        ]
-      },
-      {
-        id: 2,
-        title: "Hujan Tiba-Tiba",
-        words: [
-          "A1: jemuran trauma", "B1: sendal hanyut", "C1: lari licin", "D1: payung hilang",
-          "A2: motor minggir", "B2: kaca buram", "C2: helm bocor", "D2: kaos basah",
-          "A3: bau tanah", "B3: petir sok keras", "C3: genangan curiga", "D3: kaus kaki sedih",
-          "A4: nunggu reda", "B4: hujan makin deras", "C4: pasrah", "D4: pura-pura nikmat"
-        ]
-      },
-      {
-        id: 3,
-        title: "Antrian Panjang",
-        words: [
-          "A1: geser dikit", "B1: berdiri bengkok", "C1: pura-pura sabar", "D1: lihat jam",
-          "A2: langkah mikro", "B2: batuk orang", "C2: dengus halus", "D2: tas diturunin",
-          "A3: kaki protes", "B3: mata kosong", "C3: scroll HP", "D3: sinyal ilang",
-          "A4: hampir nyerah", "B4: eh maju", "C4: salah loket", "D4: ulang lagi"
-        ]
-      },
-      {
-        id: 4,
-        title: "Nyasar",
-        words: [
-          "A1: muter lagi", "B1: maps bohong", "C1: tanya warga", "D1: senyum palsu",
-          "A2: belok curiga", "B2: gang sempit", "C2: plang samar", "D2: ragu berat",
-          "A3: pura-pura yakin", "B3: jalan sunyi", "C3: dompet erat", "D3: deg-degan",
-          "A4: balik arah", "B4: nyasar ulang", "C4: pasrah", "D4: sampai juga"
-        ]
-      },
-      {
-        id: 5,
-        title: "Telat Bangun",
-        words: [
-          "A1: alarm dimatikan", "B1: mata satu", "C1: panik instan", "D1: loncat kasur",
-          "A2: mandi kilat", "B2: handuk jatuh", "C2: sabun kebanyakan", "D2: baju salah",
-          "A3: sepatu kebalik", "B3: kunci ilang", "C3: lari kecil", "D3: doa singkat",
-          "A4: sampai juga", "B4: napas berat", "C4: keringat bangga", "D4: pura-pura santai"
-        ]
-      },
-      {
-        id: 6,
-        title: "Salah Kirim Chat",
-        words: [
-          "A1: typo fatal", "B1: kirim grup", "C1: baca ulang", "D1: jantung jatuh",
-          "A2: hapus cepat", "B2: centang dua", "C2: udah dibaca", "D2: senyum paksa",
-          "A3: pura-pura", "B3: ganti topik", "C3: ketawa sendiri", "D3: panik senyap",
-          "A4: besok lupa", "B4: trauma kecil", "C4: pelajaran hidup", "D4: chat dibisukan"
-        ]
-      },
-      {
-        id: 7,
-        title: "Perut Keroncongan",
-        words: [
-          "A1: bunyi keras", "B1: liat sekitar", "C1: malu", "D1: senyum tipis",
-          "A2: pegang perut", "B2: geser kursi", "C2: batuk palsu", "D2: minum air",
-          "A3: mikir makan", "B3: laper berat", "C3: jam lambat", "D3: iklan muncul",
-          "A4: akhirnya makan", "B4: bahagia", "C4: kenyang", "D4: ngantuk"
-        ]
-      },
-      {
-        id: 8,
-        title: "WiFi Lemot",
-        words: [
-          "A1: reload", "B1: tunggu", "C1: muter doang", "D1: close tab",
-          "A2: nyalain data", "B2: sinyal satu", "C2: pindah tempat", "D2: HP diangkat",
-          "A3: marah pelan", "B3: tarik napas", "C3: coba lagi", "D3: gagal lagi",
-          "A4: pasrah", "B4: tidur", "C4: bangun", "D4: masih lemot"
-        ]
-      },
-      {
-        id: 9,
-        title: "Ketemu Mantan",
-        words: [
-          "A1: kaget", "B1: pura-pura sibuk", "C1: noleh dikit", "D1: senyum tipis",
-          "A2: jalan cepat", "B2: salah arah", "C2: deg-degan", "D2: tangan dingin",
-          "A3: mikir masa lalu", "B3: tarik napas", "C3: angkat dagu", "D3: sok tegar",
-          "A4: lewat", "B4: lega", "C4: ketawa sendiri", "D4: lanjut hidup"
-        ]
-      },
-      {
-        id: 10,
-        title: "Pintu Terkunci",
-        words: [
-          "A1: pegang gagang", "B1: dorong dikit", "C1: tarik kuat", "D1: bengong",
-          "A2: cek kunci", "B2: tas dibongkar", "C2: kunci ilang", "D2: panik kecil",
-          "A3: nelpon", "B3: gak diangkat", "C3: duduk", "D3: napas berat",
-          "A4: kebuka", "B4: lega", "C4: senyum", "D4: masuk"
-        ]
-      }
-    ];
+  <div class="grid-wrapper" id="grid"></div>
+</div>
 
-    function App() {
-      const [theme, setTheme] = React.useState(themes[0]);
+<script>
+const themes = [
+  {
+    title: "Listrik Mati",
+    words: [
+      "lilin panik","kipas bengong","guling gerah","nangis colokan",
+      "nyari saklar","mati gaya","bayangan serem","charger nganggur",
+      "gelap total","kulkas pasrah","kipas lelah","HP sekarat",
+      "lampu merana","AC pensiun","nyamuk pesta","sunyi brutal"
+    ]
+  },
+  {
+    title: "Alat Tawuran",
+    words: [
+      "gayung retak","sendok somay","hair dryer","selendang polkadot",
+      "sapu bengkok","helm bocor","sendal jepit","bantal lemas",
+      "ember penyok","hanger besi","talenan kayu","kabel kusut",
+      "payung terbalik","panci tipis","sisir patah","kipas mini"
+    ]
+  },
+  {
+    title: "Tidur Aneh",
+    words: [
+      "tidur berdiri","ketiduran zoom","bantal melayang","ngorok publik",
+      "selimut hilang","mimpi jatuh","tidur nyempil","melek setengah",
+      "bangun salah","alarm dibanting","posisi salah","leher korban",
+      "tidur sok kuat","rebahan abadi","ketindihan","bangun kaget"
+    ]
+  },
+  {
+    title: "Bau Misterius",
+    words: [
+      "bau hujan","bau ketek","bau lemari","bau motor",
+      "bau gosong","bau kaus kaki","bau kulkas","bau sandal",
+      "bau tanah","bau aneh","bau basah","bau plastik",
+      "bau amis","bau asap","bau jajan","bau nostalgia"
+    ]
+  },
+  {
+    title: "Emosi Publik",
+    words: [
+      "senyum palsu","ketawa sendiri","panik sunyi","malu nasional",
+      "marah halus","sok santai","nahan emosi","nangis dalem",
+      "bingung total","salah fokus","overthinking","bete umum",
+      "salting publik","awkward diam","mati gaya","krisis sikap"
+    ]
+  },
+  {
+    title: "Gerakan Aneh",
+    words: [
+      "kedip berlebihan","jalan miring","lompat refleks","duduk salah",
+      "lari kecil","putar badan","noleh cepat","geleng lambat",
+      "angkat bahu","tepuk bingung","garuk udara","nunjuk kosong",
+      "membeku","loncat panik","gerak salah","diam tegang"
+    ]
+  },
+  {
+    title: "Benda Hidup",
+    words: [
+      "kursi capek","meja cemburu","lemari galau","sendok curiga",
+      "pintu sensitif","kipas bete","kulkas dingin","bantal posesif",
+      "tas lelah","sepatu jutek","gelas trauma","sapu iri",
+      "jam stres","remote marah","lampu insecure","karpet pasrah"
+    ]
+  },
+  {
+    title: "Kejadian Malu",
+    words: [
+      "salah masuk","nyapa salah","ketawa sendiri","jatuh pelan",
+      "salah kirim","mic nyala","salah sebut","zoom kebuka",
+      "chat bocor","pakaian kebalik","salah duduk","lupa nama",
+      "salah pintu","salah lift","salah senyum","salah fokus"
+    ]
+  },
+  {
+    title: "Suara Aneh",
+    words: [
+      "klik misterius","desis pelan","gedebuk tiba","kring sunyi",
+      "tok halus","krek kecil","ngiiing jauh","bluk berat",
+      "tik random","whoosh kosong","plek lembut","dug pendek",
+      "crash imajiner","buzz halus","pop aneh","sunyi keras"
+    ]
+  },
+  {
+    title: "Situasi Absurd",
+    words: [
+      "antri sendiri","tepuk sepi","nunggu kosong","janji batal",
+      "datang kepagian","datang telat","salah hari","salah mood",
+      "niat gagal","fokus pecah","mikir keras","bingung ringan",
+      "diam rame","rame sunyi","gerak salah","ketawa telat"
+    ]
+  }
+];
 
-      const randomTheme = () => {
-        const next = themes[Math.floor(Math.random() * themes.length)];
-        setTheme(next);
-      };
+let currentIndex = 0;
 
-      return React.createElement(
-        "div",
-        { className: "app" },
-        React.createElement(
-          "button",
-          { className: "theme-button", onClick: randomTheme },
-          `Tema #${theme.id}: ${theme.title} (tap untuk ganti)`
-        ),
-        React.createElement(
-          "div",
-          { className: "grid" },
-          theme.words.map((w, i) =>
-            React.createElement(
-              "div",
-              { className: "cell", key: i },
-              React.createElement("div", { className: "cell-inner" }, w)
-            )
-          )
-        )
-      );
+function renderTheme(index) {
+  const theme = themes[index];
+  document.getElementById("themeTitle").innerHTML =
+    `${theme.title} <span>(${index + 1}/10)</span>`;
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  // empty corner
+  grid.appendChild(document.createElement("div"));
+
+  // column headers
+  ["A","B","C","D"].forEach(h => {
+    const div = document.createElement("div");
+    div.className = "col-header";
+    div.textContent = h;
+    grid.appendChild(div);
+  });
+
+  let wordIndex = 0;
+  for (let row = 1; row <= 4; row++) {
+    const rowHeader = document.createElement("div");
+    rowHeader.className = "row-header";
+    rowHeader.textContent = row;
+    grid.appendChild(rowHeader);
+
+    for (let col = 0; col < 4; col++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.textContent = theme.words[wordIndex++];
+      grid.appendChild(cell);
     }
+  }
+}
 
-    ReactDOM.createRoot(document.getElementById("root"))
-      .render(React.createElement(App));
-  </script>
+function randomTheme() {
+  let next;
+  do {
+    next = Math.floor(Math.random() * themes.length);
+  } while (next === currentIndex);
+
+  currentIndex = next;
+  renderTheme(currentIndex);
+}
+
+renderTheme(currentIndex);
+</script>
 </body>
 </html>
