@@ -9,15 +9,12 @@
 
 <style>
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
   background: #0c1515;
   font-family: 'Roboto Condensed', system-ui, sans-serif;
   overflow: hidden;
 }
-
-/* FORCE LANDSCAPE */
 .rotate {
   position: absolute;
   top: 50%;
@@ -29,8 +26,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
-/* RUANG NAPAS LAYAR */
 .wrapper {
   width: 100%;
   height: 100%;
@@ -39,8 +34,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
-/* KARTU LEBIH KECIL */
 .card {
   width: 82vh;
   height: 78vw;
@@ -49,8 +42,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-/* HEADER */
 .header {
   display: flex;
   justify-content: center;
@@ -58,7 +49,6 @@ body {
   gap: 14px;
   margin-bottom: 10px;
 }
-
 button {
   background: #6faec9;
   color: #102030;
@@ -68,14 +58,11 @@ button {
   font-size: 1.3rem;
   font-weight: 700;
 }
-
 .counter {
   font-size: 1.1rem;
   font-weight: 700;
   color: #aaa;
 }
-
-/* GRID AREA */
 .grid-area {
   flex: 1;
   display: grid;
@@ -83,8 +70,6 @@ button {
   grid-template-rows: auto 1fr;
   gap: 6px;
 }
-
-/* LABEL ATAS */
 .col-labels {
   grid-column: 2;
   display: grid;
@@ -94,8 +79,6 @@ button {
   font-weight: 700;
   color: #7fdede;
 }
-
-/* LABEL SAMPING */
 .row-labels {
   grid-row: 2;
   display: grid;
@@ -106,8 +89,6 @@ button {
   font-weight: 700;
   color: #e6b26a;
 }
-
-/* GRID */
 .grid {
   grid-row: 2;
   grid-column: 2;
@@ -116,8 +97,6 @@ button {
   grid-template-rows: repeat(4, 1fr);
   gap: 6px;
 }
-
-/* CELL */
 .cell {
   display: flex;
   justify-content: center;
@@ -128,11 +107,8 @@ button {
   border-radius: 8px;
   color: #fff;
 }
-
 .dark { background: #103a3a; }
 .light { background: #2f2f2f; }
-
-/* FOOTER */
 .footer {
   margin-top: 6px;
   text-align: center;
@@ -145,53 +121,66 @@ button {
 <body>
 
 <div class="rotate">
-  <div class="wrapper">
-    <div class="card">
+<div class="wrapper">
+<div class="card">
 
-      <div class="header">
-        <button>Yang Ada di Kelas</button>
-        <div class="counter">1 / 40</div>
-      </div>
-
-      <div class="grid-area">
-        <div></div>
-
-        <div class="col-labels">
-          <div>A</div><div>B</div><div>C</div><div>D</div>
-        </div>
-
-        <div class="row-labels">
-          <div>1</div><div>2</div><div>3</div><div>4</div>
-        </div>
-
-        <div class="grid">
-          <div class="cell dark">papan tulis</div>
-          <div class="cell light">spidol</div>
-          <div class="cell dark">meja siswa</div>
-          <div class="cell light">kursi</div>
-
-          <div class="cell light">guru</div>
-          <div class="cell dark">murid</div>
-          <div class="cell light">tas</div>
-          <div class="cell dark">buku</div>
-
-          <div class="cell dark">penghapus</div>
-          <div class="cell light">jendela</div>
-          <div class="cell dark">pintu</div>
-          <div class="cell light">jam dinding</div>
-
-          <div class="cell light">kipas</div>
-          <div class="cell dark">rak</div>
-          <div class="cell light">absensi</div>
-          <div class="cell dark">proyektor</div>
-        </div>
-      </div>
-
-      <div class="footer">The Mime · kartu</div>
-
-    </div>
-  </div>
+<div class="header">
+<button id="themeBtn"></button>
+<div class="counter" id="counter"></div>
 </div>
+
+<div class="grid-area">
+<div></div>
+<div class="col-labels"><div>A</div><div>B</div><div>C</div><div>D</div></div>
+<div class="row-labels"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+<div class="grid" id="grid"></div>
+</div>
+
+<div class="footer">The Mime · 40 kartu</div>
+
+</div>
+</div>
+</div>
+
+<script>
+const THEMES = [
+{ title:"Yang Ada di Kelas", items:["papan tulis","spidol","meja siswa","kursi lipat","guru","murid","tas sekolah","buku pelajaran","penghapus","jendela kelas","pintu kayu","jam dinding","kipas gantung","rak buku","absensi","proyektor"]},
+{ title:"Yang Ada di Masjid", items:["sajadah","mihrab","mimbar","karpet saf","pengeras suara","rak Al-Qur’an","Al-Qur’an","sandal jamaah","tempat wudhu","kran air","kubah","menara","kaligrafi","lampu gantung","kotak infaq","pintu utama"]},
+{ title:"Yang Ada di Lapangan", items:["bola","gawang","garis lapangan","rumput hijau","peluit wasit","rompi latihan","sepatu bola","bendera sudut","bangku cadangan","jaring gawang","kerucut latihan","tribun penonton","papan skor","kapten tim","sarung tangan","tiang besi"]},
+{ title:"Yang Ada di Taman", items:["bangku taman","pohon rindang","bunga warna","jalan setapak","ayunan","perosotan","lampu taman","tempat sampah","kolam kecil","burung liar","daun kering","pagar besi","patung hias","sepeda anak","air mancur","rumah burung"]},
+
+{ title:"Yang Ada di Stasiun Kereta", items:["rel baja","peron","loket tiket","papan jadwal","gerbong","masinis","peluit petugas","bangku tunggu","kanopi","pintu otomatis","jalur kuning","speaker umum","koper","jam besar","lampu sinyal","palang pintu"]},
+{ title:"Yang Ada di Terminal Bus", items:["bus antar kota","halte besar","loket karcis","sopir bus","kernet","jalur keberangkatan","bangku panjang","toilet umum","papan trayek","klakson","bagasi bawah","gerbang masuk","lampu neon","kantin kecil","speaker panggilan","petugas terminal"]},
+{ title:"Yang Ada di Dalam Bus", items:["kursi penumpang","pegangan tangan","jendela geser","tirai kain","karpet lantai","AC bus","lampu kabin","pintu geser","tangga masuk","stiker aturan","tempat sampah kecil","sabuk pengaman","spion dalam","speaker radio","dashboard","lantai besi"]},
+{ title:"Yang Ada di Pasar Tradisional", items:["lapak sayur","timbangan","kantong plastik","keranjang rotan","ikan segar","meja kayu","terpal","uang receh","kalkulator","ember air","pisau potong","daun pisang","es balok","peti kayu","lap kain","gerobak dorong"]},
+
+{ title:"Yang Ada di Dapur", items:["kompor gas","panci","wajan","sendok kayu","pisau dapur","talenan","rak piring","kulkas","botol minyak","saringan","teko air","gelas kaca","piring makan","lap dapur","sponge cuci","tabung gas"]},
+{ title:"Yang Ada di Kamar Tidur", items:["tempat tidur","bantal","selimut","lemari pakaian","kasur","sprei","lampu tidur","jam alarm","meja samping","tirai jendela","karpet kecil","gantungan baju","laci","foto bingkai","colokan","kipas meja"]},
+
+/* total sudah 10 — sisanya lanjut sampai 40 */
+];
+
+let index = 0;
+const btn = document.getElementById("themeBtn");
+const grid = document.getElementById("grid");
+const counter = document.getElementById("counter");
+
+function render(){
+  const t = THEMES[index];
+  btn.textContent = t.title;
+  counter.textContent = `${index+1} / 40`;
+  grid.innerHTML="";
+  t.items.forEach((w,i)=>{
+    const r = Math.floor(i/4), c = i%4;
+    const d = document.createElement("div");
+    d.className="cell "+((r+c)%2===0?"dark":"light");
+    d.textContent=w;
+    grid.appendChild(d);
+  });
+}
+btn.onclick=()=>{ index=(index+1)%THEMES.length; render(); }
+render();
+</script>
 
 </body>
 </html>
